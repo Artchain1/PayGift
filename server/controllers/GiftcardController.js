@@ -1,4 +1,4 @@
-const GiftCard = "../models/GiftcardModel.js";
+const GiftCard = require("../models/GiftcardModel.js");
 
 const createGiftCard = async (req, res) => {
   try {
@@ -23,11 +23,12 @@ const createGiftCard = async (req, res) => {
     const savedGiftCard = await newGiftCard.save();
     res.status(201).json(savedGiftCard);
   } catch (error) {
+    // console.log(error)
     res.status(400).json({ error: error.message });
   }
 };
 
-// Get all gift cards
+
 const getAllGiftCards = async (req, res) => {
   try {
     const giftCards = await GiftCard.find();
@@ -37,7 +38,7 @@ const getAllGiftCards = async (req, res) => {
   }
 };
 
-// Get a single gift card by ID
+
 const getGiftCardById = async (req, res) => {
   try {
     const giftCard = await GiftCard.findById(req.params.id);
