@@ -33,7 +33,7 @@ const store = new MongoDBStore({
   expires: 1 * 60 * 60, 
 });
 
-// Use express-session middleware
+
 app.use(
   session({
     secret: process.env.JWT_SECRET, 
@@ -58,10 +58,10 @@ app.use(express.urlencoded({ extended: true })); // parse form data inside the r
 app.use(cors(corsOptions));
 app.use(cookieParser());
 
-// Configure passport
+
 initializePassport(passport);
 
-// Middleware to initialize passport
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/auth", authRoutes);
