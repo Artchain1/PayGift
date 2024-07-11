@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRecoilValue } from "recoil";
 
 
-const BASE_URL = "http://localhost:3500/";
+const BASE_URL = "http://localhost:3500";
 
 
  const axiosInstance = axios.create({
