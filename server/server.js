@@ -16,7 +16,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const cloudinary = require("cloudinary").v2;
 
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3500;
 
 const app = express();
 
@@ -66,7 +66,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use("/auth", authRoutes);
 app.use("/account", userRoutes);
-app.use('/api', giftcardRoutes);
+app.use('/cards', giftcardRoutes);
 
 
 mongoose
