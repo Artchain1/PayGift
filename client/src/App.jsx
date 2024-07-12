@@ -10,6 +10,7 @@ import Register from "./components/Auth/Register/Register";
 import AccountConfirmation from "./components/Auth/AccountConfirmation/AccountConfirmation";
 import LinkExpired from "./components/Auth/LinkExpired/LinkExpired";
 import ActivatePage from "./components/Auth/ActivateAccount/ActivatePage";
+import Dashboard from "./pages/DashboardPage";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/confirm-email" element={<AccountConfirmation />} />
         <Route path="/link-expired/" element={<LinkExpired />} />
         <Route path="/verify-access/:token" element={<ActivatePage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </>
   );
