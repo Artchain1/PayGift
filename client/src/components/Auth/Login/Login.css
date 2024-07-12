@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap");
 
 .logCon {
-  margin-top: 5rem;
+  margin-top: 4rem;
   display: flex;
   justify-content: space-around;
 }
@@ -86,7 +86,6 @@
 }
 
 .logImg {
-  margin-top: -8rem;
   margin-left: 2rem;
 }
 
