@@ -16,7 +16,7 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const cloudinary = require("cloudinary").v2;
 
 dotenv.config();
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
