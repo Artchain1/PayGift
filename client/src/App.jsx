@@ -11,6 +11,7 @@ import WalletPage from "./pages/WalletPage";
 import CreateGiftcard from "./pages/CreateGiftcard";
 import RedeemGiftcard from "./pages/RedeemGiftcardPage";
 import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/link-expired/" element={<LinkExpired />} />
         <Route path="/verify-access/:token" element={<ActivatePage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </>
   );
