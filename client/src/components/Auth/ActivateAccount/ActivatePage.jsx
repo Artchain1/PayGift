@@ -1,38 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import {  useAxiosInstance } from "../../../../api/axios";
 
 const ActivatePage = () => {
   const [confirmed, setConfirmed] = useState(false);
   const [loading, setLoading] = useState(true);
   const { token } = useParams();
   const navigate = useNavigate();
+  const axiosInstance = useAxiosInstance();
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
+  console.log("I am rendering confirm email");
 
-    const getConfirmation = async () => {
-      try {
-        const response = await axios.get(`/auth/activate-account/${token}`, { cancelToken: source.token });
-        setConfirmed(true);
-      } catch (error) {
-        console.log(error);
-        navigate('/link-expired');
-      } finally {
-        setLoading(false);
-      }
-    };
+	useEffect(() => {
+		console.log("I am rendering useEffect", "loading:" + loading);
+		const source = axios.CancelToken.source();
 
-    if (loading && !confirmed) {
-      getConfirmation();
-    }
+		const getConfirmation = async () => {
+			console.log("I am rendering  getConfirmation function");
+			try {
+				const response = await axiosInstance.get(
+					`/auth/activate-account/${token}`,
+					{ cancelToken: source.token }
+				);
+				setConfirmed(true);
+			} catch (error) {
+				console.log(error);
+				navigate("/link-expired");
+			} finally {
+				setLoading(false);
+			}
+		};
 
-    return () => {
-      source.cancel();
-    };
-  }, [loading, confirmed, navigate, token]);
+		if (loading && !confirmed) getConfirmation();
 
-  if (!confirmed && loading) {
+		return () => {
+			source.cancel();
+		};
+	}, [loading]);
+
+	if (!confirmed && loading) {
     return (
       <div className="loading-container">
         <span>Verifying Your Account</span>

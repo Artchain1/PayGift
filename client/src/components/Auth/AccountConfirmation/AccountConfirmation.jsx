@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./AccountConfirmation.css";
 
@@ -11,13 +11,13 @@ const AccountConfirmation = () => {
   return (
     <>
       <div className="confirmation-container">
-      <button
-        className="check-button"
-        onClick={handleNavigate}
-        aria-label="Done"
-      >
-        Done
-      </button>
+        <button
+          className="check-button"
+          onClick={handleNavigate}
+          aria-label="Done"
+        >
+          Done
+        </button>
 
         <h1 className="confirmation-text">Your Account has been</h1>
         <h1 className="confirmation-text">successfully created</h1>
@@ -36,10 +36,7 @@ const AccountConfirmation = () => {
               within 10 minutes.
             </p>
 
-            <button
-              className="back-to-login-button"
-              onClick={handleNavigate}
-            >
+            <button className="back-to-login-button" onClick={handleNavigate}>
               Back to login
             </button>
           </div>
