@@ -1,11 +1,9 @@
 import React from "react";
 import "./Login.css";
 import { cartImg } from "../../../../assets";
-
 import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../../../atoms/authAtom";
 import { useState } from "react";
-
 import userAtom from "../../../atoms/userAtom";
 import { prevPathAtom } from "../../../atoms/prevPathAtom";
 import useShowToast from "../../../hooks/useShowToast";
@@ -97,6 +95,7 @@ const Login = () => {
                 <input
                   placeholder="********"
                   name="password"
+                  type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 />
@@ -110,7 +109,7 @@ const Login = () => {
 
           <div className="logIn">
             <p>
-              Don&apos;t have an account? <Link>Sign up</Link>
+              Don&apos;t have an account? <Link to='/signup'>Sign up</Link>
             </p>
           </div>
         </div>

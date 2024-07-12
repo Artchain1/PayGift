@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import signUp from "../../../../assets/signUp.png";
 import { Link, useNavigate } from "react-router-dom";
-import "./Register.css";
-
 import { useSetRecoilState } from "recoil";
 import { useAxiosInstance } from "../../../../api/axios";
 import useShowToast from "../../../hooks/useShowToast";
 import userAtom from "../../../atoms/userAtom";
+import "./Register.css";
 
 const Register = () => {
   const [email, setEmail] = useState("");
