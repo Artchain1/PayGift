@@ -1,12 +1,10 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
-
 import Wallet from "./components/Dashboard/Wallet";
 import Settings from "./components/Dashboard/Settings";
 import CreateCard from "./components/Dashboard/GiftCard/CreateCard";
 import Redeem from "./components/Dashboard/GiftCard/Redeem";
-
 import Login from "./components/Auth/Login/Login";
 import Register from "./components/Auth/Register/Register";
 import AccountConfirmation from "./components/Auth/AccountConfirmation/AccountConfirmation";
