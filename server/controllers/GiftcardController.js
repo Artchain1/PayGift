@@ -28,7 +28,6 @@ const createGiftCard = async (req, res) => {
   }
 };
 
-
 const getAllGiftCards = async (req, res) => {
   try {
     const giftCards = await GiftCard.find();
@@ -37,7 +36,6 @@ const getAllGiftCards = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const getGiftCardById = async (req, res) => {
   try {
@@ -51,7 +49,6 @@ const getGiftCardById = async (req, res) => {
   }
 };
 
-// Update a gift card by ID
 const updateGiftCard = async (req, res) => {
   try {
     const updatedGiftCard = await GiftCard.findByIdAndUpdate(
@@ -68,7 +65,6 @@ const updateGiftCard = async (req, res) => {
   }
 };
 
-// Delete a gift card by ID
 const deleteGiftCard = async (req, res) => {
   try {
     const deletedGiftCard = await GiftCard.findByIdAndDelete(req.params.id);
