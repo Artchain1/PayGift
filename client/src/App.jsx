@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Login from "./components/Auth/Login/Login";
 import Register from "./components/Auth/Register/Register";
@@ -17,7 +17,6 @@ const App = () => {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-
         <Route path="/create" element={<CreateGiftcard />} />
         <Route path="/redeem" element={<RedeemGiftcard />} />
         <Route path="/settings" element={<SettingsPage />} />
