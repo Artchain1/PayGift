@@ -1,110 +1,127 @@
-const GiftCard = require("../models/GiftcardModel.js");
-const User = require("../models/UserModel.js");
-const { sendGiftcardMail } = require("../utils/sendMail");
+const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
+const crypto = require('crypto');
+const Mailgen = require('mailgen');
+const GiftCard = require('../models/GiftCard'); // Assuming GiftCard is your Mongoose model
+const User = require('../models/UserModel'); // Assuming User is your Mongoose model
 
+dotenv.config();
+
+// Configuration for nodemailer
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
+  },
+});
+
+// Configuration for Mailgen
+const mailGenerator = new Mailgen({
+  theme: 'default',
+  product: {
+    name: 'PayGifty',
+    link: 'https://google.com',
+  },
+});
+
+// Function to generate a random code
+const generateCode = () => {
+  return crypto.randomBytes(8).toString('hex');
+};
+
+// Create gift card
 const createGiftCard = async (req, res) => {
+  const { amount, senderEmail, recipientEmail, message } = req.body;
+  const code = generateCode();
+
   try {
-    const {
-      design,
-      cryptocurrency,
-      amount,
-      note,
-      recipientEmail,
-      fees,
-      totalAmount,
-    } = req.body;
-
-    const creatorId = req.userId;
-
-    const newGiftCard = await GiftCard.create({
-      design,
-      creatorId,
-      cryptocurrency,
-      amount,
-      note,
-      recipientEmail,
-      fees,
-      totalAmount,
-    });
-    const owner = await User.findById(creatorId);
-
-    //Create new client if client email is not found associated with clientFor
-    const existingClient = await Client.findOne({
-      email: client.email,
-      clientFor: creatorId,
-    });
-
-    if (!existingClient) {
-      const newClient = new Client({
-        name: client.name,
-        email: client.email,
-        // address: client.address,
-        clientFor: creatorId,
-      });
-
-      await newClient.save();
+    // Verify sender is a registered user
+    const sender = await User.findOne({ email: senderEmail });
+    if (!sender) {
+      return res.status(400).json({ message: 'Sender must be a registered user' });
     }
 
-    sendGiftcardMail(newGiftCard, owner, res);
+    const newGiftCard = new GiftCard({
+      code,
+      amount,
+      sender: sender._id,
+      recipientEmail,
+      message,
+    });
+
+    await newGiftCard.save();
+
+    // Prepare the email content
+    const email = {
+      body: {
+        name: recipientEmail,
+        intro: `You have received a gift card ${amount} with the code: ${code}.`,
+        action: {
+          instructions: message,
+          button: {
+            color: '#22BC66', // Optional action button color
+            text: 'Redeem your gift card',
+            link: 'http://localhost:5173/redeem',
+          },
+        },
+        outro: 'Thank you for using PayGifty!',
+      },
+    };
+
+    const emailBody = mailGenerator.generate(email);
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: recipientEmail,
+      subject: 'You received a gift card!',
+      html: emailBody,
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({ message: 'Failed to send email' });
+      }
+      console.log('Email sent:', info.response);
+    });
+
+    res.status(201).json(newGiftCard);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error creating gift card:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-const getAllGiftCards = async (req, res) => {
-  try {
-    const giftCards = await GiftCard.find();
-    res.status(200).json(giftCards);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// Redeem gift card
+const redeemGiftCard = async (req, res) => {
+  const { code, recipientEmail } = req.body;
 
-const getGiftCardById = async (req, res) => {
   try {
-    const giftCard = await GiftCard.findById(req.params.id);
+    // Verify recipient is a registered user
+    const recipient = await User.findOne({ email: recipientEmail });
+    if (!recipient) {
+      return res.status(400).json({ message: 'Recipient must be a registered user to redeem the gift card' });
+    }
+
+    const giftCard = await GiftCard.findOne({ code, redeemed: false, recipientEmail });
     if (!giftCard) {
-      return res.status(404).json({ error: "Gift card not found" });
+      return res.status(404).json({ message: 'Invalid or already redeemed gift card' });
     }
+
+    giftCard.redeemed = true;
+    await giftCard.save();
+
     res.status(200).json(giftCard);
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-const updateGiftCard = async (req, res) => {
-  try {
-    const updatedGiftCard = await GiftCard.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!updatedGiftCard) {
-      return res.status(404).json({ error: "Gift card not found" });
-    }
-    res.status(200).json(updatedGiftCard);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-const deleteGiftCard = async (req, res) => {
-  try {
-    const deletedGiftCard = await GiftCard.findByIdAndDelete(req.params.id);
-    if (!deletedGiftCard) {
-      return res.status(404).json({ error: "Gift card not found" });
-    }
-    res.status(200).json({ message: "Gift card deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error redeeming gift card:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
 module.exports = {
   createGiftCard,
-  getAllGiftCards,
-  deleteGiftCard,
-  updateGiftCard,
-  getGiftCardById,
+  redeemGiftCard,
 };
