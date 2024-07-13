@@ -1,10 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const giftCardSchema = new Schema({
   design: {
     type: String,
     required: true,
+  },
+  creatorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   cryptocurrency: {
     type: String,
@@ -17,12 +21,12 @@ const giftCardSchema = new Schema({
   },
   note: {
     type: String,
-    default: '',
+    default: "",
   },
   recipientEmail: {
     type: String,
     required: true,
-    match: [/.+@.+\..+/, 'Please enter a valid email address'],
+    match: [/.+@.+\..+/, "Please enter a valid email address"],
   },
   fees: {
     type: Number,
@@ -40,6 +44,6 @@ const giftCardSchema = new Schema({
   },
 });
 
-const GiftCard = mongoose.model('GiftCard', giftCardSchema);
+const GiftCard = mongoose.model("GiftCard", giftCardSchema);
 
 module.exports = GiftCard;
