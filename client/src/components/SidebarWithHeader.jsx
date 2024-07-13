@@ -110,16 +110,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </AccordionItem>
       </Accordion>
 
-      <NavItem
-        as={NavLink}
-        to={"/wallet"}
-        style={({ isActive }) => ({
-          color: isActive ? "rgb(41, 112, 255)" : "",
-        })}
-        icon={AiFillGift}
-      >
-        Wallet
-      </NavItem>
+    
       <NavItem
         as={NavLink}
         to={"/settings"}
