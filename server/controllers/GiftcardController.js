@@ -1,4 +1,6 @@
 const GiftCard = require("../models/GiftcardModel.js");
+const User = require("../models/UserModel.js");
+const { sendGiftcardMail } = require("../utils/sendMail");
 
 const createGiftCard = async (req, res) => {
   try {
@@ -11,8 +13,12 @@ const createGiftCard = async (req, res) => {
       fees,
       totalAmount,
     } = req.body;
-    const newGiftCard = new GiftCard({
+
+    const creatorId = req.userId;
+
+    const newGiftCard = await GiftCard.create({
       design,
+      creatorId,
       cryptocurrency,
       amount,
       note,
@@ -20,11 +26,29 @@ const createGiftCard = async (req, res) => {
       fees,
       totalAmount,
     });
-    const savedGiftCard = await newGiftCard.save();
-    res.status(201).json(savedGiftCard);
+    const owner = await User.findById(creatorId);
+
+    //Create new client if client email is not found associated with clientFor
+    const existingClient = await Client.findOne({
+      email: client.email,
+      clientFor: creatorId,
+    });
+
+    if (!existingClient) {
+      const newClient = new Client({
+        name: client.name,
+        email: client.email,
+        // address: client.address,
+        clientFor: creatorId,
+      });
+
+      await newClient.save();
+    }
+
+    sendGiftcardMail(newGiftCard, owner, res);
   } catch (error) {
-    // console.log(error)
-    res.status(400).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

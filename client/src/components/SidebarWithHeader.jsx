@@ -193,7 +193,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         icon={<FiMenu />}
       />
 
-      <Image display={{ base: "flex", md: "none" }} src="/QBLogo.png" />
+      {/* <Image display={{ base: "flex", md: "none" }} src="/PayGifty.png" /> */}
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
