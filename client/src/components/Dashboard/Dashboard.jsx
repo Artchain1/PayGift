@@ -58,7 +58,7 @@ const Dashboard = () => {
             mb={5}
               colorScheme="orange"
               width={["100%", "auto"]}
-              onClick={() => navigate("/redeem")}
+              // onClick={() => navigate("/redeem")}
             >
              connect wallet
             </Button>

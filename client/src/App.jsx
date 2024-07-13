@@ -7,7 +7,6 @@ import AccountConfirmation from "./components/Auth/AccountConfirmation/AccountCo
 import LinkExpired from "./components/Auth/LinkExpired/LinkExpired";
 import ActivatePage from "./components/Auth/ActivateAccount/ActivatePage";
 import Dashboard from "./pages/DashboardPage";
-import WalletPage from "./pages/WalletPage";
 import CreateGiftcard from "./pages/CreateGiftcard";
 import RedeemGiftcard from "./pages/RedeemGiftcardPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -19,7 +18,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route path="/wallet" element={<WalletPage />} />
         <Route path="/create" element={<CreateGiftcard />} />
         <Route path="/redeem" element={<RedeemGiftcard />} />
         <Route path="/settings" element={<SettingsPage />} />
