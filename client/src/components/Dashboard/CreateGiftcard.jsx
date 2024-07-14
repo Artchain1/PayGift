@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Input, Textarea, FormControl, FormLabel, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+// import { useGiftCard } from './GiftCardContext';
+import { useGiftCard } from '../Context/GiftCardContext';
 
 const CreateGiftCard = () => {
   const [amount, setAmount] = useState('');
@@ -8,12 +10,14 @@ const CreateGiftCard = () => {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [message, setMessage] = useState('');
   const toast = useToast();
+  const { addGiftCard } = useGiftCard();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const giftCard = { amount, senderEmail, recipientEmail, message };
     try {
       await axios.post('http://localhost:3000/api/giftcards/create', giftCard);
+      addGiftCard(giftCard);
       toast({
         title: 'Gift card created.',
         description: 'Gift card created and email sent!',
