@@ -60,9 +60,10 @@ const Settings = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Flex
-        minH={"100vh"}
-        align={"center"}
-        justify={"center"}
+        minH={"80vh"}
+        // align={"center"}
+        // justify={"center"}
+        ml={40}
         bg={useColorModeValue("gray.50", "gray.800")}
       >
         <Stack
@@ -125,6 +126,7 @@ const Settings = () => {
               type="email"
               onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
               value={inputs.email}
+              disabled
             />
           </FormControl>
           <FormControl>

@@ -11,10 +11,13 @@ import CreateGiftcard from "./pages/CreateGiftcard";
 import RedeemGiftcard from "./pages/RedeemGiftcardPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import { ChakraProvider } from "@chakra-ui/react";
+import { GiftCardProvider } from "./components/Context/GiftCardContext";
 
 const App = () => {
   return (
-    <>
+    <ChakraProvider>
+    <GiftCardProvider>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreateGiftcard />} />
@@ -28,7 +31,8 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
-    </>
+    </GiftCardProvider>
+    </ChakraProvider>
   );
 };
 

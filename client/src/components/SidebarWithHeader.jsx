@@ -24,6 +24,7 @@ import {
   MenuButton,
   MenuDivider,
   MenuItem,
+  Button,
   MenuList,
 } from "@chakra-ui/react";
 import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
@@ -121,6 +122,15 @@ const SidebarContent = ({ onClose, ...rest }) => {
       >
         Settings
       </NavItem>
+      <Button
+        mt={10}
+        ml={5}
+          colorScheme="orange"
+          width={["100%", "auto"]}
+          // onClick={() => navigate("/redeem")}
+        >
+          connect wallet
+        </Button>
     </Box>
   );
 };
