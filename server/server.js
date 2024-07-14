@@ -10,7 +10,6 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const giftCardRoute = require("./routes/giftCardRoute")
-const giftCardRoutes = require("./routes/giftCardRoutes");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const cloudinary = require("cloudinary").v2;
@@ -64,7 +63,6 @@ app.use(passport.session());
 // Routes
 app.use("/auth", authRoutes);
 app.use("/account", userRoutes);
-app.use("/api/giftcards", giftCardRoutes);
 app.use("/api/giftcards", giftCardRoute);
 
 

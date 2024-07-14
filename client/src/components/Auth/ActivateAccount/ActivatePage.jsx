@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import "./ActivatePage.css"
 import {  useAxiosInstance } from "../../../../api/axios";
 
 const ActivatePage = () => {

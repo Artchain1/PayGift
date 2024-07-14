@@ -94,19 +94,17 @@ const createGiftCard = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-// Redeem gift card
 const redeemGiftCard = async (req, res) => {
-  const { code, recipientEmail } = req.body;
+  const { code } = req.body;
+
+  console.log('Request body:', req.body);  // Log the request body
+
+  if (!code) {
+    return res.status(400).json({ message: 'Code is required' });
+  }
 
   try {
-    // Verify recipient is a registered user
-    const recipient = await User.findOne({ email: recipientEmail });
-    if (!recipient) {
-      return res.status(400).json({ message: 'Recipient must be a registered user to redeem the gift card' });
-    }
-
-    const giftCard = await GiftCard.findOne({ code, redeemed: false, recipientEmail });
+    const giftCard = await GiftCard.findOne({ code, redeemed: false });
     if (!giftCard) {
       return res.status(404).json({ message: 'Invalid or already redeemed gift card' });
     }
@@ -120,6 +118,9 @@ const redeemGiftCard = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
+
 
 module.exports = {
   createGiftCard,
