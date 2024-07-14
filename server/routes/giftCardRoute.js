@@ -1,7 +1,7 @@
 const express = require('express');
 const GiftCard = require('../models/GiftCard');
 const router = express.Router();
-
+const giftCardController = require('../controllers/GiftcardController');
 
 // Create a gift card
 router.post('/create', async (req, res) => {
@@ -23,5 +23,8 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+
+router.post('/redeem', giftCardController.redeemGiftCard);
 
 module.exports = router;
