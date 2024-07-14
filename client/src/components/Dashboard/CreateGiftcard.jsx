@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Input, Textarea, FormControl, FormLabel, useToast } from '@chakra-ui/react';
 import axios from 'axios';
-// import { useGiftCard } from './GiftCardContext';
 import { useGiftCard } from '../Context/GiftCardContext';
 
 const CreateGiftCard = () => {
@@ -20,7 +19,7 @@ const CreateGiftCard = () => {
       addGiftCard(giftCard);
       toast({
         title: 'Gift card created.',
-        description: 'Gift card created and email sent!',
+        description: 'Gift card PIN has been successfully sent to the desired Gmail. Please kindly activate the card on the dashboard!',
         status: 'success',
         duration: 5000,
         isClosable: true,

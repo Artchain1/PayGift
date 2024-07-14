@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Box, Button, Input, FormControl, FormLabel, Heading, Flex, Text, Card, CardBody } from '@chakra-ui/react';
+import { PayGiftyContext } from '../../context/PayGiftyProvider';
 import axios from 'axios';
 
 const RedeemGiftcard = () => {
+  const { redeemGiftCard, provider, currentAccount } = useContext(PayGiftyContext);
   const [code, setCode] = useState('');
   const [redeemed, setRedeemed] = useState(false);
 
   const handleRedeem = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/giftcards/redeem', { code });
+      await axios.post('http://localhost:3000/api/giftcards/redeem', { code, currentAccount });
       setRedeemed(true);
       alert('Gift card redeemed!');
     } catch (error) {
@@ -51,7 +53,6 @@ const RedeemGiftcard = () => {
                 Redeem
               </Box>
             </Flex>
-
           </CardBody>
         </Card>
       </Flex>

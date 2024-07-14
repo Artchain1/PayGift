@@ -7,6 +7,7 @@ import "./index.css";
 import { mode } from "@chakra-ui/theme-tools";
 import { extendTheme } from "@chakra-ui/theme-utils";
 import { RecoilRoot } from "recoil";
+import { PayGiftyProvider } from "./context/PayGiftyProvider.jsx";
 
 const styles = {
   global: (props) => ({
@@ -34,12 +35,14 @@ const theme = extendTheme({ config, styles, colors });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <RecoilRoot>
     {/* <React.StrictMode> */}
+    <PayGiftyProvider>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <App />
       </ChakraProvider>
     </BrowserRouter>
+    </PayGiftyProvider>
 
     {/* </React.StrictMode> */}
   </RecoilRoot>

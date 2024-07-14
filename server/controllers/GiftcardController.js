@@ -57,7 +57,7 @@ const createGiftCard = async (req, res) => {
     const email = {
       body: {
         name: recipientEmail,
-        intro: `You have received a gift card ${amount} with the code: ${code}.`,
+        intro: `You have received a gift card of $${amount} with the code: ${code}, Kindly wait until it is activated.`,
         action: {
           instructions: message,
           button: {

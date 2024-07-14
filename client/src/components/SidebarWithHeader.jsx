@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import {
   Accordion,
   AccordionItem,
@@ -5,8 +6,6 @@ import {
   AccordionPanel,
   AccordionIcon,
   Image,
-} from "@chakra-ui/react";
-import {
   IconButton,
   Avatar,
   Box,
@@ -36,8 +35,12 @@ import { TbGiftCard } from "react-icons/tb";
 import { MdHome } from "react-icons/md";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import { PayGiftyContext } from "../context/PayGiftyProvider";
+import { shortenAddress } from "../../utils/shortenAddress";
 
 const SidebarContent = ({ onClose, ...rest }) => {
+  const { currentAccount, connectWallet, disconnectWallet } = useContext(PayGiftyContext);
+
   return (
     <Box
       transition="3s ease"
@@ -51,9 +54,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="6" justifyContent="space-between">
-      
         <Image src="/PayGifty.png" />
-
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
 
@@ -111,7 +112,6 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </AccordionItem>
       </Accordion>
 
-    
       <NavItem
         as={NavLink}
         to={"/settings"}
@@ -122,15 +122,22 @@ const SidebarContent = ({ onClose, ...rest }) => {
       >
         Settings
       </NavItem>
+
       <Button
         mt={10}
         ml={5}
-          colorScheme="orange"
-          width={["100%", "auto"]}
-          // onClick={() => navigate("/redeem")}
-        >
-          connect wallet
+        colorScheme="orange"
+        width={["100%", "auto"]}
+        onClick={currentAccount ? disconnectWallet : connectWallet}
+      >
+        {currentAccount ? "Disconnect Wallet" : "Connect Wallet"}
+      </Button>
+
+      {currentAccount && (
+        <Button mt={10} ml={5} colorScheme="orange" width={["100%", "auto"]}>
+          <button>{shortenAddress(currentAccount)}</button>
         </Button>
+      )}
     </Box>
   );
 };
@@ -193,8 +200,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-
-      {/* <Image display={{ base: "flex", md: "none" }} src="/PayGifty.png" /> */}
 
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
