@@ -1,10 +1,11 @@
+// controllers/GiftcardController.js
 const mongoose = require('mongoose');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 const crypto = require('crypto');
 const Mailgen = require('mailgen');
-const GiftCard = require('../models/GiftCard'); // Assuming GiftCard is your Mongoose model
-const User = require('../models/UserModel'); // Assuming User is your Mongoose model
+const GiftCard = require('../models/GiftCard'); 
+const User = require('../models/UserModel'); 
 
 dotenv.config();
 
@@ -94,6 +95,8 @@ const createGiftCard = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Redeem gift card
 const redeemGiftCard = async (req, res) => {
   const { code } = req.body;
 
@@ -118,9 +121,6 @@ const redeemGiftCard = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
-
-
 
 module.exports = {
   createGiftCard,
