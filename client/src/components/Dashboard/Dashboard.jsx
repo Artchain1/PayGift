@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import React, { useEffect, useState, useContext } from 'react';
+import { Box, Button, Flex, Heading, Image, Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, useDisclosure } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { PayGiftyContext } from '../../context/PayGiftyProvider';
+import { ethers } from 'ethers';
 import axios from 'axios';
 
 // Predefined list of colors
 const cardColors = ['#00008B', '#000000', '#A52A2A', '#008000', '#800080', '#808000', '#34282C', '#033E3E', '#78866B'];
 
 const Dashboard = () => {
+  const { buyGiftCard, redeemGiftCard, provider, currentAccount } = useContext(PayGiftyContext);
+
   const [giftCards, setGiftCards] = useState([]);
+  const [purchasedCards, setPurchasedCards] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [modalMessage, setModalMessage] = useState('');
+  const { isOpen: isCongratulationModalOpen, onOpen: onCongratulationOpen, onClose: onCongratulationClose } = useDisclosure();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +30,30 @@ const Dashboard = () => {
 
     fetchGiftCards();
   }, []);
+
+  const handleBuyGiftCard = async (cardId, amount) => {
+    if (!provider) {
+      setModalMessage('Unable to purchase. Please connect your wallet.');
+      onOpen();
+      return;
+    }
+    try {
+      const balance = await provider.getBalance(currentAccount);
+      const balanceInEther = ethers.utils.formatEther(balance);
+      if (parseFloat(balanceInEther) < parseFloat(amount)) {
+        setModalMessage('The amount in your wallet is insufficient to buy this card.');
+        onOpen();
+      } else {
+        await buyGiftCard();
+        setPurchasedCards([...purchasedCards, cardId]);
+        onCongratulationOpen();
+      }
+    } catch (error) {
+      console.error('Error checking balance:', error);
+      setModalMessage('Error checking balance. Please try again.');
+      onOpen();
+    }
+  };
 
   return (
     <Box bg="orange.50" p={[4, 6, 8]} flex="1">
@@ -139,18 +171,63 @@ const Dashboard = () => {
               right={4}
               alignItems="center"
             >
-              <Button
-                size="sm"
-                colorScheme="orange"
-                variant="solid"
-                width={20}
-              >
-                Buy
-              </Button>
+              {purchasedCards.includes(card._id) ? (
+                <Button
+                  size="sm"
+                  colorScheme="green"
+                  variant="solid"
+                  width={20}
+                  disabled
+                >
+                  Purchased
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  colorScheme="orange"
+                  variant="solid"
+                  width={20}
+                  onClick={() => handleBuyGiftCard(card._id, card.amount)}
+                >
+                  Buy
+                </Button>
+              )}
             </Flex>
           </Box>
         ))}
       </Box>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Error</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{modalMessage}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="orange" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isCongratulationModalOpen} onClose={onCongratulationClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Congratulations</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>The gift card has been bought successfully!</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="orange" mr={3} onClick={onCongratulationClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
