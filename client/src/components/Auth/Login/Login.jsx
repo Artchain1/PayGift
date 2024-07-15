@@ -70,7 +70,7 @@ const Login = () => {
   return (
     <div className="logCon">
       <div className="inputCon">
-        <h2>PayGift</h2>
+        <h2>PayGifty</h2>
         <div className="inputBox">
           <div className="logText">
             <p>Welcome back !!!</p>
