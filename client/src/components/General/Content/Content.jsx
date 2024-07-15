@@ -19,13 +19,13 @@ const Content = () => {
           <h3>Ready To Use Template</h3>
           <p>Add a personal message and choose a design for the gift card</p>
         </div>
-        <div className='--Content-Steps-Info steps'>
+        <div className='--Content-Steps-Info'>
           <img src={contentTwo} alt="" />
           <h4>2</h4>
           <h3>Choose Crypto Currency</h3>
           <p>Select the cryptocurrency you want to gift And  Choose the value of the gift card you want to buy</p>
         </div>
-        <div className='--Content-Steps-Info step'>
+        <div className='--Content-Steps-Info'>
           <img src={contentThree} alt="" />
           <h4>3</h4>
           <h3>Send Your Gift Card</h3>

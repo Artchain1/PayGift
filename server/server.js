@@ -9,69 +9,67 @@ const initializePassport = require("./config/passport-setup");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-const giftcardRoutes = require("./routes/giftcardRoutes");
+const giftCardRoute = require("./routes/giftCardRoute")
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
-
 const cloudinary = require("cloudinary").v2;
 
 dotenv.config();
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+// Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
+// MongoDB session store
 const store = new MongoDBStore({
   uri: process.env.MONGO_URI,
   collection: "sessions",
-  expires: 1 * 60 * 60, 
+  expires: 1 * 60 * 60,
 });
 
-// Use express-session middleware
+// Middleware setup
+app.use(credentials);
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors(corsOptions));
+
+// Session setup
 app.use(
   session({
-    secret: process.env.JWT_SECRET, 
+    secret: process.env.JWT_SECRET,
     resave: true,
     saveUninitialized: false,
-    store: store, 
+    store: store,
     cookie: {
-      maxAge: 1 * 60 * 60 * 1000, 
-      secure: true, 
+      maxAge: 1 * 60 * 60 * 1000,
+      secure: true,
       sameSite: "none",
     },
   })
 );
 
-
-app.use(credentials);
-
-
-
-app.use(express.json({ limit: "50mb" })); //parse json data inside the req body
-app.use(express.urlencoded({ extended: true })); // parse form data inside the req body
-app.use(cors(corsOptions));
-app.use(cookieParser());
-
-// Configure passport
+// Passport initialization
 initializePassport(passport);
-
-// Middleware to initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Routes
 app.use("/auth", authRoutes);
 app.use("/account", userRoutes);
-app.use('/cards', giftcardRoutes);
+app.use("/api/giftcards", giftCardRoute);
 
 
+// Connect to MongoDB and start the server
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Is 🏃‍♂️ On PORT ${PORT}`));
+    app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
   })
   .catch((err) => console.log(err));

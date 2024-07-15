@@ -14,10 +14,10 @@ const Navbar = () => {
         <h3>About</h3>
       </div>
       <div className='--Navbar-button'>
-        <Link to="/register">
+        <Link to="/signup">
           <button>Sign Up</button>
         </Link>
-        <Link to="/login">
+        <Link to="/auth">
           <button>Log In</button>
         </Link>
       </div>
