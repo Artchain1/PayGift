@@ -7,7 +7,7 @@ module.exports = {
   networks: {
     hardhat: {
     },
-    celoTestnet: {
+    celoMainnet: {
       url: process.env.CELO_URL,
       accounts: [`0x${process.env.PRIVATE_KEY}`]
     }
