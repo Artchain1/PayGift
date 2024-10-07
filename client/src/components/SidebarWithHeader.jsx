@@ -9,6 +9,7 @@ import {
   IconButton,
   Avatar,
   Box,
+  Link,
   CloseButton,
   Flex,
   HStack,
@@ -27,6 +28,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+import { Link as RouterLink } from "react-router-dom";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiFillGift } from "react-icons/ai";
 import { BsGearFill } from "react-icons/bs";
@@ -50,11 +52,13 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
-      color={"#374957"} ///////////////////////////////////////////////////For the sidebar
+      color={"#374957"}
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="6" justifyContent="space-between">
-        <Image src="/PayGifty.png" />
+      <Link as={RouterLink} to="/">
+          <Image src="/PayGifty.png" alt="payGifty Logo" />
+        </Link>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
 

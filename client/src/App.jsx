@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "./components/Home/Home";
+// import Home from "./components/Home/Home";
 import Login from "./components/Auth/Login/Login";
 import Register from "./components/Auth/Register/Register";
 import AccountConfirmation from "./components/Auth/AccountConfirmation/AccountConfirmation";
@@ -13,13 +13,14 @@ import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import { ChakraProvider } from "@chakra-ui/react";
 import { GiftCardProvider } from "./components/Context/GiftCardContext";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
     <ChakraProvider>
     <GiftCardProvider>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/create" element={<CreateGiftcard />} />
         <Route path="/redeem" element={<RedeemGiftcard />} />
         <Route path="/settings" element={<SettingsPage />} />

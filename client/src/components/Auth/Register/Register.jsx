@@ -1,114 +1,176 @@
 import React, { useState } from "react";
-import signUp from "../../../../assets/signUp.png";
-import { Link, useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { useAxiosInstance } from "../../../../api/axios";
-import useShowToast from "../../../hooks/useShowToast";
-import userAtom from "../../../atoms/userAtom";
-import "./Register.css";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Image,
+  FormControl,
+  FormLabel,
+  Heading,
+  Text,
+  VStack,
+  useToast,
+  Flex,
+  Link,
+  AbsoluteCenter,
+} from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link as RouterLink } from "react-router-dom";
+
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const setUser = useSetRecoilState(userAtom);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate();
-  const showToast = useShowToast();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const axiosInstance = useAxiosInstance();
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      return showToast("Error", "password does not correspond", "error");
+      return toast({
+        title: "Error",
+        description: "Passwords do not match",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
     setLoading(true);
-    try {
-      const response = await axiosInstance.post(
-        "/auth/signup",
-        JSON.stringify({ name, email, password, confirmPassword })
-      );
-   
-      const data = response.data;
 
-      if (data.message) {
-        showToast("Success", data.message, "success");
-      }
-
-      navigate("/confirm-email");
-    } catch (error) {
-      console.log(error);
-      showToast("Error", error.response.data.error, "error");
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
+
+
   return (
-    <div className="Register">
-      <div className="--Register-Flex">
-        <div className="--Register-Box">
-          <div>
-            <h2>payGifty</h2>
-            <h1>Sign UP</h1>
-          </div>
-          <div className="--Register-Form">
-            <form action="" onSubmit={handleSubmit}>
-              <label htmlFor="email">Email</label> <br />
-              <input
+    <Flex
+      direction="column"
+      align="center"
+      justify="center"
+      minH="100vh"
+      mt={12}
+      mb={12}
+      bg="white"
+    >
+      <VStack
+        spacing={4}
+        bg="white"
+        boxShadow="lg"
+        borderRadius="30px"
+        p={8}
+        w={{ base: "90%", md: "40%" }}
+        maxW="lg"
+        px={{ base: 4, md: 16 }}
+        py={{ base: 4, md: 8 }}
+      >
+        <Link as={RouterLink} to="/">
+          <Image src="/PayGifty.png" alt="payGifty Logo" />
+        </Link>
+
+        <Heading as="h1" size="md" mt={4}>
+          Sign Up
+        </Heading>
+
+      
+        <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <VStack spacing={4} w="100%">
+            <FormControl id="email" isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
                 type="email"
                 placeholder="example@gmail.com"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
-                required
-              />{" "}
-              <br />
-              <label htmlFor="email">Name</label> <br />
-              <input
+              />
+            </FormControl>
+
+            <FormControl id="name" isRequired>
+              <FormLabel>Name</FormLabel>
+              <Input
                 type="text"
-                onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
+                onChange={(e) => setName(e.target.value)}
                 value={name}
-                required
-              />{" "}
-              <br />
-              <label htmlFor="email">Password</label> <br />
-              <input
-                type="password"
-                placeholder="Your Password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />{" "}
-              <br />
-              <label htmlFor="email">Confirm Password</label> <br />
-              <input
-                type="password"
-                placeholder="Confirm Your Password"
-                required
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                value={confirmPassword}
-              />{" "}
-              <br />
-              <button type="submit" disabled={loading}>
-                {loading ? "Signing you up..." : "Sign Up"}
-              </button>
-              <p>
-                Have An Account:{" "}
-                <Link style={{ color: "#f4803a" }} to="/auth">
-                  Sign In
-                </Link>
-              </p>
-            </form>
-          </div>
-        </div>
-        <div className="Footer-Image">
-          <img src={signUp} alt="" />
-        </div>
-      </div>
-    </div>
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Password</FormLabel>
+              <InputGroup>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  placeholder="Enter password"
+                  required
+                />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Confirm Password</FormLabel>
+              <InputGroup>
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
+                  placeholder="Confirm password"
+                  required
+                />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowConfirmPassword(
+                        (showConfirmPassword) => !showConfirmPassword
+                      )
+                    }
+                  >
+                    {showConfirmPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+
+            <Button
+              type="submit"
+              colorScheme="orange"
+              isLoading={loading}
+              loadingText="Signing you up..."
+              width="100%"
+            >
+              Sign Up
+            </Button>
+          </VStack>
+        </form>
+
+        <Text mt={4}>
+          Have An Account?{" "}
+          <Link as={RouterLink} to="/auth">
+            <Text as="span" color="orange.400">
+              Sign In
+            </Text>
+          </Link>
+        </Text>
+      </VStack>
+    </Flex>
   );
 };
 

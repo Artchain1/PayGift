@@ -8,6 +8,11 @@ import {
   FormLabel,
   useToast,
   Text,
+  Stack,
+  Heading,
+  VStack,
+  HStack,
+  Divider,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useGiftCard } from "../Context/GiftCardContext";
@@ -27,9 +32,8 @@ const CreateGiftCard = () => {
       await axios.post("http://localhost:3000/api/giftcards/create", giftCard);
       addGiftCard(giftCard);
       toast({
-        title: "Gift card created.",
-        description:
-          "Gift card PIN has been successfully sent to the desired Gmail. Please kindly activate the card on the dashboard!",
+        title: "Gift Card Created",
+        description: "A gift card PIN has been sent to the recipient's email.",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -37,8 +41,8 @@ const CreateGiftCard = () => {
     } catch (error) {
       console.error(error);
       toast({
-        title: "Error.",
-        description: "Error creating gift card.",
+        title: "Error",
+        description: "Failed to create the gift card. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -47,57 +51,119 @@ const CreateGiftCard = () => {
   };
 
   return (
-    <Box>
-     <Text textAlign="center" fontSize="3xl" color='#A52A2A' fontWeight="900" > CREATE YOUR GIFT-CARD </Text>
-      
-      <Box
-      as="form"
-      onSubmit={handleSubmit}
-      p={5}
-      borderWidth="1px"
-      borderRadius="lg"
-      boxShadow="0 4px 20px rgba(0, 0, 0, 0.5)" // This adds the box shadow
+    <Box
+      maxW="lg"
+      mx="auto"
+      p={8}
       mt={10}
+      bg="white"
+      borderRadius="lg"
+      boxShadow="lg"
+      border="1px solid"
+      borderColor="gray.200"
     >
-      <FormControl id="amount" isRequired>
-      <FormLabel>Amount</FormLabel>
-        <Input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          border="0.2px solid #800080"
-        />
-      </FormControl>
-      <FormControl id="senderEmail" isRequired mt={4}>
-        <FormLabel>Sender Email</FormLabel>
-        <Input
-          type="email"
-          value={senderEmail}
-          onChange={(e) => setSenderEmail(e.target.value)}
-          border="0.2px solid #800080"
-        />
-      </FormControl>
-      <FormControl id="recipientEmail" isRequired mt={4}>
-        <FormLabel>Recipient Email</FormLabel>
-        <Input
-          type="email"
-          value={recipientEmail}
-          onChange={(e) => setRecipientEmail(e.target.value)}
-          border="0.2px solid #800080"
-        />
-      </FormControl>
-      <FormControl id="message" mt={4}>
-        <FormLabel>Message</FormLabel>
-        <Textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          border="0.2px solid #800080"
-        />
-      </FormControl>
-      <Button type="submit" colorScheme="green" mt={4}>
-        Create Gift Card
-      </Button>
-    </Box>
+      <VStack spacing={6} align="stretch">
+        <Heading
+          textAlign="center"
+          fontSize="3xl"
+          color="teal.600"
+          fontWeight="bold"
+          mb={4}
+        >
+          Create a Gift Card
+        </Heading>
+
+        <Divider borderColor="teal.200" />
+
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={6}>
+            <FormControl id="amount" isRequired>
+              <FormLabel fontSize="lg" color="teal.700">
+                Gift Card Amount
+              </FormLabel>
+              <Input
+                type="number"
+                placeholder="Enter the amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                focusBorderColor="teal.500"
+                border="2px solid"
+                borderColor="gray.300"
+                _hover={{ borderColor: "teal.500" }}
+                borderRadius="md"
+                p={4}
+              />
+            </FormControl>
+
+            <FormControl id="senderEmail" isRequired>
+              <FormLabel fontSize="lg" color="teal.700">
+                Sender Email
+              </FormLabel>
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={senderEmail}
+                onChange={(e) => setSenderEmail(e.target.value)}
+                focusBorderColor="teal.500"
+                border="2px solid"
+                borderColor="gray.300"
+                _hover={{ borderColor: "teal.500" }}
+                borderRadius="md"
+                p={4}
+              />
+            </FormControl>
+
+            <FormControl id="recipientEmail" isRequired>
+              <FormLabel fontSize="lg" color="teal.700">
+                Recipient Email
+              </FormLabel>
+              <Input
+                type="email"
+                placeholder="Enter recipient's email"
+                value={recipientEmail}
+                onChange={(e) => setRecipientEmail(e.target.value)}
+                focusBorderColor="teal.500"
+                border="2px solid"
+                borderColor="gray.300"
+                _hover={{ borderColor: "teal.500" }}
+                borderRadius="md"
+                p={4}
+              />
+            </FormControl>
+
+            <FormControl id="message">
+              <FormLabel fontSize="lg" color="teal.700">
+                Message (Optional)
+              </FormLabel>
+              <Textarea
+                placeholder="Add a message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                focusBorderColor="teal.500"
+                border="2px solid"
+                borderColor="gray.300"
+                _hover={{ borderColor: "teal.500" }}
+                borderRadius="md"
+                p={4}
+              />
+            </FormControl>
+
+            <Button
+              type="submit"
+              colorScheme="teal"
+              size="lg"
+              fontSize="md"
+              _hover={{
+                bg: "teal.700",
+                transform: "translateY(-2px)",
+                boxShadow: "lg",
+              }}
+            >
+              Create Gift Card
+            </Button>
+          </Stack>
+        </form>
+      </VStack>
     </Box>
   );
 };
